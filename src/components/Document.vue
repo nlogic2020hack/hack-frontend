@@ -4,7 +4,7 @@
       size="xl"
       centered
       hide-footer
-      title="BootstrapVue"
+      :title="fileName"
   >
 
     <b-pagination
@@ -67,7 +67,6 @@ export default {
     ...mapGetters(['currentDocument', 'currentPages']),
   },
   async mounted() {
-    console.log(this.modalId)
     await this.fetchDocument(this.docId);
   },
   components: {
@@ -78,6 +77,9 @@ export default {
       required: true,
     },
     modalId: {
+      required: true,
+    },
+    fileName: {
       required: true,
     },
   }
