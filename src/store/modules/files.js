@@ -7,7 +7,7 @@ export default {
             const files = await res.json();
             ctx.commit('updateFiles', files.result)
         },
-        postFile(ctx) {
+        async postFile(ctx) {
 
         }
     },

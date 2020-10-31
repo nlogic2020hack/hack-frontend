@@ -1,6 +1,10 @@
 <template>
+  <div>
   <b-table
-      :items="allFiles"
+      id="table-database"
+      :current-page="currentPage"
+      :items="getFilesForTable()"
+      :per-page="perPage"
       :fields="fields"
       :borderless="true"
       head-variant="light"
@@ -36,8 +40,18 @@
     </template>
 
   </b-table>
+  <b-pagination
+      align="center"
+      v-model="currentPage"
+      :total-rows="getFilesForTable().length"
+      :per-page="perPage"
+      aria-controls="table-database"
+  >
+  </b-pagination>
+  </div>
 
 </template>
+
 
 <script>
 import Document from "@/components/Document";
@@ -48,8 +62,12 @@ export default {
   name: "Table",
   data () {
     return {
-      fields: ['id', {key: 'name',label: 'File Name'}, 'show_details'],
-      docId: null
+      fields: ['id', {key: 'date',label: 'Date Added'}, {key: 'name',label: 'File Name'}, 'show_details'],
+      docId: null,
+      searchResults: null,
+      currentPage: 1,
+      perPage: 10,
+
     }
   },
   methods: {
@@ -57,8 +75,14 @@ export default {
     modalId(docId, fileId) {
       return 'document-modal-' + docId + '-' + fileId;
     },
-    setCurrentDocId (docId) {
+    setCurrentDocId(docId) {
       this.docId = docId
+    },
+    getFilesForTable() {
+      if (this.searchResults) {
+        return this.searchResults
+      }
+      return this.allFiles
     }
   },
   computed: mapGetters(['allFiles']),
@@ -67,6 +91,31 @@ export default {
   },
   components: {
     Document
+  },
+  props: {
+    query: {
+      required: false,
+    }
+  },
+  watch: {
+    query: function() {
+      if (this.query != null && this.query !== '') {
+        console.log('!')
+        fetch(
+            process.env.VUE_APP_BASE_URL + '/files/search/' + this.query
+        )
+            .then(response => response.json())
+            .then(json => json.result)
+            .then((json => {
+              this.searchResults = json
+            }))
+      }
+      else {
+        console.log('?')
+
+        this.searchResults = this.allFiles
+      }
+    }
   }
 }
 </script>

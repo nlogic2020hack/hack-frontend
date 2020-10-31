@@ -14,6 +14,7 @@
       }
     },
     mounted() {
+      console.log(this.url)
     },
     props: {
       url: {
@@ -23,9 +24,6 @@
         required: true
       }
     },
-    computed: {
-
-    }
   }
 </script>
 

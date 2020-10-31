@@ -1,28 +1,18 @@
 <template>
   <b-container class="bv-example-row mb-5">
     <b-row class="text-center mt-4" align-h="start">
-      <b-col cols="10" align-self="start">
+      <b-col align-self="start">
         <b-form-input
             v-model="query"
             type="text"
-            placeholder="Введи запрос"
+            placeholder="Введи запрос, (поиск производится по тексту документа)"
             size="lg"
         ></b-form-input>
-      </b-col>
-
-      <b-col>
-        <b-button
-            variant="primary"
-            align-self="end"
-            size="lg"
-        >
-          Поиск
-        </b-button>
       </b-col>
     </b-row>
 
     <b-row class="text-center mt-3">
-      <b-col cols="8">
+      <b-col>
 
         <b-alert :show="isLoading">
           Файл {{ this.currentFileName }} в обработке, подожди немного
@@ -40,7 +30,7 @@
             v-if="!isLoading"
             v-model="file"
             placeholder="Добавь файл в базу"
-            accept="image/jpeg, image/png, application/pdf"
+            accept="image/jpeg, image/png, application/pdf, image/jpg, image/tiff"
         >
         </b-form-file>
 
@@ -59,14 +49,11 @@
     </b-row>
 
     <b-row class="text-center mt-4" align-h="start" align-v="baseline">
-      <b-col cols="10" align-self="start">
+      <b-col align-self="start">
         <Table
             :key="reload"
+            :query="query"
         />
-      </b-col>
-
-      <b-col>
-        Здесь будут фильтры
       </b-col>
     </b-row>
 
@@ -106,7 +93,7 @@ export default {
         body: data
       })
       const result = await resp.json();
-      if (!result.result)
+      if (!result.result || result.result === 'failed')
         this.isError = true
 
       this.isDone = true;
