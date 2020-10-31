@@ -5,7 +5,7 @@
         <b-form-input
             v-model="query"
             type="text"
-            placeholder="Введи запрос, (поиск производится по тексту документа)"
+            placeholder="Поиск по тексту документов"
             size="lg"
         ></b-form-input>
       </b-col>
@@ -19,7 +19,7 @@
         </b-alert>
 
         <b-alert variant="success" :show="isDone">
-          Файл {{ this.currentFileName }} обработался, поищи его в базе)
+          Файл {{ this.currentFileName }} обработан и доступен в базе
         </b-alert>
 
         <b-alert variant="danger" :show="isError" dismissible>
@@ -34,16 +34,6 @@
         >
         </b-form-file>
 
-      </b-col>
-
-      <b-col cols="2">
-        <b-button
-            :disabled="this.file == null"
-            variant="primary"
-            v-on:click="uploadFile"
-        >
-          Загрузить файл
-        </b-button>
       </b-col>
 
     </b-row>
@@ -103,10 +93,12 @@ export default {
   },
   components: {
     Table
+  },
+  watch: {
+    file: async function() {
+      if (this.file)
+        await this.uploadFile()
+    }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

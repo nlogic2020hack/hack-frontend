@@ -62,7 +62,11 @@ export default {
   name: "Table",
   data () {
     return {
-      fields: ['id', {key: 'date',label: 'Date Added'}, {key: 'name',label: 'File Name'}, 'show_details'],
+      fields: [{key: 'id', label: 'ID'},
+        {key: 'date',label: 'Дата загрузки'},
+        {key: 'name',label: 'Имя файла'},
+        {key: 'show_details', label: 'Показать сущности'}
+      ],
       docId: null,
       searchResults: null,
       currentPage: 1,
@@ -100,7 +104,6 @@ export default {
   watch: {
     query: function() {
       if (this.query != null && this.query !== '') {
-        console.log('!')
         fetch(
             process.env.VUE_APP_BASE_URL + '/files/search/' + this.query
         )
@@ -111,7 +114,6 @@ export default {
             }))
       }
       else {
-        console.log('?')
 
         this.searchResults = this.allFiles
       }
@@ -119,7 +121,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
