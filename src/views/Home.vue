@@ -22,7 +22,7 @@
         </b-alert>
 
         <b-alert variant="danger" :show="isError" dismissible>
-          Файл {{ this.currentFileName }} не смог обработаться(
+          Упс, на файле {{ this.currentFileName }} что-то сломалось
         </b-alert>
 
         <b-form-file
@@ -84,8 +84,9 @@ export default {
       const result = await resp.json();
       if (!result.result || result.result === 'failed')
         this.isError = true
+      else
+        this.isDone = true;
 
-      this.isDone = true;
       this.isLoading = false;
       this.reload = !this.reload
     }
