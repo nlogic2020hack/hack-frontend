@@ -6,7 +6,6 @@
             v-model="query"
             type="text"
             placeholder="Поиск по тексту документов"
-            size="lg"
         ></b-form-input>
       </b-col>
     </b-row>
@@ -29,7 +28,7 @@
         <b-form-file
             v-if="!isLoading"
             v-model="file"
-            placeholder="Добавь файл в базу"
+            placeholder="Загрузить файл в базу"
             accept="image/jpeg, image/png, application/pdf, image/jpg, image/tiff"
         >
         </b-form-file>
